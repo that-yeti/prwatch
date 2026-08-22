@@ -1,0 +1,106 @@
+Screen {
+    layers: base overlay;
+}
+
+#filter {
+    display: none;
+    dock: top;
+    border: none;
+    background: $panel;
+    padding: 0 1;
+}
+
+#filter.visible {
+    display: block;
+}
+
+#prs {
+    height: 1fr;
+    scrollbar-size-vertical: 1;
+}
+
+#status {
+    height: 1;
+    padding: 0 1;
+    background: $panel;
+    color: $text-muted;
+}
+
+#status.error {
+    background: $error 20%;
+    color: $text;
+}
+
+ModalScreen {
+    align: center middle;
+    background: $background 60%;
+}
+
+#dialog {
+    width: 64;
+    height: auto;
+    max-height: 90%;
+    overflow-y: auto;
+    padding: 1 2;
+    border: round $accent;
+    background: $surface;
+}
+
+#dialog > .title {
+    text-style: bold;
+    padding-bottom: 1;
+}
+
+#dialog > .hint {
+    color: $text-muted;
+    padding-top: 1;
+}
+
+#dialog Input {
+    width: 100%;
+}
+
+#dialog ListView {
+    height: auto;
+    max-height: 16;
+    background: $surface;
+    border: none;
+}
+
+#dialog #buttons {
+    height: auto;
+    padding-top: 1;
+    align-horizontal: right;
+}
+
+#dialog #buttons Button {
+    margin-left: 2;
+}
+
+#output-dialog {
+    width: 90%;
+    height: 90%;
+    padding: 0 1;
+    border: round $accent;
+    background: $surface;
+}
+
+#output-title {
+    height: 1;
+    text-style: bold;
+}
+
+#output-log {
+    height: 1fr;
+    border: none;
+    background: $surface;
+}
+
+#output-hint {
+    height: 1;
+    color: $text-muted;
+}
+
+#help-table {
+    height: auto;
+}
