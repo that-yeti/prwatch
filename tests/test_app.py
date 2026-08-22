@@ -80,7 +80,7 @@ async def test_table_lists_prs_newest_first_with_status_colours(cfg, stub_fetch)
             "red",
             "yellow",
             "grey50",
-            "white",
+            "green",
         ]
         assert table_rows[0][4].plain == "1d"
         assert table_rows[0][5].plain == "1h"
