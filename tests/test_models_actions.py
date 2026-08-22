@@ -46,8 +46,9 @@ def test_ci_status_mapping(state, expected):
         (make_pr(), "green"),
         (make_pr(ci=CIStatus.PENDING), "yellow"),
         (make_pr(ci=CIStatus.FAILURE), "red"),
-        (make_pr(ci=CIStatus.NONE), "white"),
+        (make_pr(ci=CIStatus.NONE), "green"),
         (make_pr(is_draft=True, ci=CIStatus.FAILURE), "grey50"),
+        (make_pr(is_draft=True, ci=CIStatus.NONE), "grey50"),
     ],
 )
 def test_row_style(pr, style):

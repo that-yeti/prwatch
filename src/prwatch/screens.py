@@ -235,11 +235,10 @@ class HelpScreen(ModalScreen[None]):
     ]
 
     LEGEND = [
-        ("green", "passed"),
+        ("green", "passed / no checks"),
         ("yellow", "pending"),
         ("red", "failed"),
         ("grey50", "draft"),
-        ("white", "none"),
     ]
 
     def compose(self) -> ComposeResult:

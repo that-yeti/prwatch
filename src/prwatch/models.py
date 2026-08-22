@@ -56,14 +56,18 @@ class PullRequest:
 
     @property
     def style(self) -> str:
-        """Rich style used for every cell of this pull request's row."""
+        """Rich style used for every cell of this pull request's row.
+
+        A commit with no checks reported is green like a passing one: nothing
+        is failing or outstanding. The ``–`` glyph still tells the two apart.
+        """
         if self.is_draft:
             return "grey50"
         return {
             CIStatus.SUCCESS: "green",
             CIStatus.PENDING: "yellow",
             CIStatus.FAILURE: "red",
-            CIStatus.NONE: "white",
+            CIStatus.NONE: "green",
         }[self.ci]
 
     @property
