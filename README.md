@@ -6,9 +6,9 @@ summary or a review.
 
 ![prwatch](docs/screenshot.svg)
 
-Row colour is the CI state of the PR's head commit:
+Row color is the CI state of the PR's head commit:
 
-| colour | meaning                              |
+| color | meaning                              |
 | ------ | ------------------------------------ |
 | green  | all checks passed                    |
 | yellow | checks pending                       |
@@ -17,7 +17,7 @@ Row colour is the CI state of the PR's head commit:
 | white  | no checks reported for the commit    |
 
 The leading glyph column (`✓ • ✗ –`) repeats the same information for when
-colour alone is not enough.
+color alone is not enough.
 
 ## Install
 
