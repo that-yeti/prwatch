@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import webbrowser
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 from rich.text import Text
 from textual import work
@@ -122,7 +122,7 @@ class PRWatchApp(App[None]):
             self._error = None
             self._prs = result.pull_requests
             self._warnings = result.warnings
-            self._last_refresh = datetime.now(UTC)
+            self._last_refresh = datetime.now(timezone.utc)
         self._render()
 
     # ------------------------------------------------------------- rendering
@@ -138,19 +138,17 @@ class PRWatchApp(App[None]):
 
     def _sort_key(self, pr: PullRequest):
         field = SORT_FIELDS[self._sort_index][0]
-        match field:
-            case "updated":
-                return pr.updated_at
-            case "created":
-                return pr.created_at
-            case "repo":
-                return (pr.repo.lower(), pr.number)
-            case "number":
-                return (pr.number, pr.repo.lower())
-            case "title":
-                return pr.title.lower()
-            case _:
-                return (_CI_ORDER[pr.ci], pr.is_draft, pr.updated_at)
+        if field == "updated":
+            return pr.updated_at
+        if field == "created":
+            return pr.created_at
+        if field == "repo":
+            return (pr.repo.lower(), pr.number)
+        if field == "number":
+            return (pr.number, pr.repo.lower())
+        if field == "title":
+            return pr.title.lower()
+        return (_CI_ORDER[pr.ci], pr.is_draft, pr.updated_at)
 
     def _render(self) -> None:
         table = self.query_one("#prs", DataTable)
@@ -161,7 +159,7 @@ class PRWatchApp(App[None]):
             reverse=self._sort_reverse,
         )
         table.clear()
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         for pr in self._visible:
             style = pr.style
             table.add_row(

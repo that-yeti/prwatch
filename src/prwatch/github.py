@@ -38,7 +38,7 @@ class GitHubError(Exception):
     """Raised when the whole fetch fails (auth, network, malformed response)."""
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class FetchResult:
     pull_requests: list[PullRequest]
     warnings: list[str]
@@ -108,6 +108,17 @@ def _build_query(repos: list[str], limit: int) -> str:
     return "query {\n" + "\n".join(blocks) + "\n}"
 
 
+def _parse_timestamp(value: str) -> datetime:
+    """Parse a GitHub ISO-8601 timestamp.
+
+    ``datetime.fromisoformat`` only learned to accept a trailing ``Z`` in 3.11,
+    and every timestamp GitHub returns carries one.
+    """
+    if value.endswith(("Z", "z")):
+        value = value[:-1] + "+00:00"
+    return datetime.fromisoformat(value)
+
+
 def _parse_pr(repo: str, node: dict) -> PullRequest:
     commits = (node.get("commits") or {}).get("nodes") or []
     rollup = None
@@ -120,8 +131,8 @@ def _parse_pr(repo: str, node: dict) -> PullRequest:
         url=node["url"],
         author=((node.get("author") or {}).get("login")) or "ghost",
         is_draft=bool(node.get("isDraft")),
-        created_at=datetime.fromisoformat(node["createdAt"]),
-        updated_at=datetime.fromisoformat(node["updatedAt"]),
+        created_at=_parse_timestamp(node["createdAt"]),
+        updated_at=_parse_timestamp(node["updatedAt"]),
         ci=CIStatus.from_rollup((rollup or {}).get("state")),
     )
 

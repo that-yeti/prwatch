@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import os
 import re
-import tomllib
+import sys
 from dataclasses import dataclass, field, replace
 from pathlib import Path
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:  # pragma: no cover - exercised on 3.9/3.10 only
+    import tomli as tomllib
 
 DEFAULT_API_URL = "https://api.github.com/graphql"
 
@@ -38,7 +43,7 @@ class ConfigError(Exception):
     """Raised when the config file is present but unusable."""
 
 
-@dataclass(slots=True)
+@dataclass
 class Config:
     repos: list[str] = field(default_factory=list)
     refresh_seconds: int = 300
