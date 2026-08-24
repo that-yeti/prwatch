@@ -21,11 +21,18 @@ not enough, and splits the two green cases apart: `✓` passed, `•` pending,
 
 ## Install
 
+Python 3.9 or newer. On 3.9 and 3.10 the [tomli](https://pypi.org/project/tomli/)
+backport is pulled in automatically for TOML parsing; 3.11+ uses the stdlib
+`tomllib` instead.
+
 ```sh
 git clone <this repo> && cd prwatch
 python -m venv .venv && .venv/bin/pip install -e .
 .venv/bin/prwatch
 ```
+
+Editable installs of this project need pip 21.3 or newer (it has no `setup.py`);
+run `.venv/bin/pip install --upgrade pip` first if yours is older.
 
 Or, with [uv](https://docs.astral.sh/uv/): `uv tool install .` and then just
 `prwatch`.
@@ -138,7 +145,7 @@ command = ["llm", "-m", "gpt-4o", "{prompt}"]
 
 ```sh
 .venv/bin/pip install pytest pytest-asyncio ruff
-.venv/bin/python -m pytest          # 94 tests, no network access needed
+.venv/bin/python -m pytest          # 97 tests, no network access needed
 .venv/bin/ruff check src tests scripts
 .venv/bin/python scripts/screenshot.py   # regenerate docs/screenshot.svg
 ```

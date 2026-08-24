@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -6,7 +6,7 @@ from prwatch.actions import ActionError, build_command, render_prompt, stream_co
 from prwatch.config import Config
 from prwatch.models import CIStatus, PullRequest, humanise_age
 
-NOW = datetime(2026, 8, 21, 12, 0, tzinfo=UTC)
+NOW = datetime(2026, 8, 21, 12, 0, tzinfo=timezone.utc)
 
 
 def make_pr(**overrides) -> PullRequest:

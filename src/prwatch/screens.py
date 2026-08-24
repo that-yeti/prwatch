@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import shlex
+from typing import Optional
 
 from rich.text import Text
 from textual import work
@@ -17,7 +18,7 @@ from .actions import ActionError, stream_command
 MAX_ECHOED_ARG = 100
 
 
-class AddRepoScreen(ModalScreen[str | None]):
+class AddRepoScreen(ModalScreen[Optional[str]]):
     """Ask for a repository reference; returns the raw text or None."""
 
     BINDINGS = [Binding("escape", "cancel", "Cancel")]
@@ -129,7 +130,7 @@ class ReposScreen(ModalScreen[bool]):
         self.dismiss(self._changed)
 
 
-class AgentPickerScreen(ModalScreen[str | None]):
+class AgentPickerScreen(ModalScreen[Optional[str]]):
     """Choose which configured agent CLI should run the action."""
 
     BINDINGS = [Binding("escape", "cancel", "Cancel")]

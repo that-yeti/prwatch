@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import sys
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from prwatch import app as app_module
@@ -17,7 +17,7 @@ from prwatch.config import Config
 from prwatch.github import FetchResult
 from prwatch.models import CIStatus, PullRequest
 
-NOW = datetime.now(UTC)
+NOW = datetime.now(timezone.utc)
 
 
 def pr(repo, number, title, ci, *, draft=False, days=1, hours=1, author="ada"):

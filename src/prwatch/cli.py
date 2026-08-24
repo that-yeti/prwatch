@@ -40,28 +40,28 @@ def main(argv: list[str] | None = None) -> int:
         print(f"prwatch: {exc}", file=sys.stderr)
         return 1
 
-    match args.command:
-        case "add" | "remove" | "rm":
-            changed = False
-            for repo in args.repos:
-                try:
-                    cfg = cfg.with_repo(repo) if args.command == "add" else cfg.without_repo(repo)
-                except ConfigError as exc:
-                    print(f"prwatch: {exc}", file=sys.stderr)
-                    continue
-                changed = True
-            if changed:
-                path = save_config(cfg)
-                print(f"wrote {path}")
-            for repo in cfg.repos:
-                print(repo)
-            return 0
-        case "list" | "ls":
-            for repo in cfg.repos:
-                print(repo)
-            if not cfg.repos:
-                print(f"no repositories configured in {config_path(args.config)}")
-            return 0
+    if args.command in ("add", "remove", "rm"):
+        changed = False
+        for repo in args.repos:
+            try:
+                cfg = cfg.with_repo(repo) if args.command == "add" else cfg.without_repo(repo)
+            except ConfigError as exc:
+                print(f"prwatch: {exc}", file=sys.stderr)
+                continue
+            changed = True
+        if changed:
+            path = save_config(cfg)
+            print(f"wrote {path}")
+        for repo in cfg.repos:
+            print(repo)
+        return 0
+
+    if args.command in ("list", "ls"):
+        for repo in cfg.repos:
+            print(repo)
+        if not cfg.repos:
+            print(f"no repositories configured in {config_path(args.config)}")
+        return 0
 
     if cfg.path is not None and not cfg.path.exists():
         save_config(cfg)

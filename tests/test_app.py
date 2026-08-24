@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from textual.widgets import DataTable, Input, ListView, RichLog, Static
@@ -10,7 +10,7 @@ from prwatch.github import FetchResult, GitHubError
 from prwatch.models import CIStatus, PullRequest
 
 # Ages are rendered against the wall clock, so anchor the fixtures to it.
-NOW = datetime.now(UTC)
+NOW = datetime.now(timezone.utc)
 
 
 def make_pr(repo="acme/alpha", number=1, ci=CIStatus.SUCCESS, draft=False, title=None, hours=1):

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 
@@ -18,15 +18,13 @@ class CIStatus(Enum):
     @classmethod
     def from_rollup(cls, state: str | None) -> CIStatus:
         """Map a GitHub ``StatusState`` onto our four buckets."""
-        match state:
-            case "SUCCESS":
-                return cls.SUCCESS
-            case "PENDING" | "EXPECTED":
-                return cls.PENDING
-            case "FAILURE" | "ERROR":
-                return cls.FAILURE
-            case _:
-                return cls.NONE
+        if state == "SUCCESS":
+            return cls.SUCCESS
+        if state in ("PENDING", "EXPECTED"):
+            return cls.PENDING
+        if state in ("FAILURE", "ERROR"):
+            return cls.FAILURE
+        return cls.NONE
 
     @property
     def symbol(self) -> str:
@@ -38,7 +36,7 @@ class CIStatus(Enum):
         }[self]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class PullRequest:
     repo: str
     number: int
@@ -79,7 +77,7 @@ class PullRequest:
 
 def humanise_age(moment: datetime, *, now: datetime | None = None) -> str:
     """Render a timestamp as a compact relative age, e.g. ``3d`` or ``12m``."""
-    now = now or datetime.now(UTC)
+    now = now or datetime.now(timezone.utc)
     seconds = max(0, int((now - moment).total_seconds()))
     if seconds < 60:
         return f"{seconds}s"

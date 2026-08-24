@@ -1,11 +1,18 @@
 import json
+from datetime import datetime, timedelta, timezone
 
 import httpx
 import pytest
 
 from prwatch import github
 from prwatch.config import Config
-from prwatch.github import GitHubError, _build_query, _run_query, fetch_pull_requests
+from prwatch.github import (
+    GitHubError,
+    _build_query,
+    _parse_timestamp,
+    _run_query,
+    fetch_pull_requests,
+)
 from prwatch.models import CIStatus
 
 
@@ -24,6 +31,17 @@ def pr_node(number=1, draft=False, rollup="SUCCESS", author="ada"):
             ]
         },
     }
+
+
+@pytest.mark.parametrize(
+    "raw",
+    ["2026-08-01T10:00:00Z", "2026-08-01T10:00:00z", "2026-08-01T10:00:00+00:00"],
+)
+def test_parse_timestamp_accepts_the_z_suffix(raw):
+    """GitHub always sends ``Z``; fromisoformat only accepts it from 3.11 on."""
+    parsed = _parse_timestamp(raw)
+    assert parsed == datetime(2026, 8, 1, 10, 0, tzinfo=timezone.utc)
+    assert parsed.utcoffset() == timedelta(0)
 
 
 def make_client(handler):
